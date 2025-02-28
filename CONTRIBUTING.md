@@ -42,7 +42,7 @@ Follow the instructions in the [README.md](README.md) to set up your local devel
 - Fork the repository on GitHub
 - Clone your fork locally:
   ```bash
-  git clone https://github.com/yourusername/neurointerview.git
+  git clone https://github.com/samsterpiece/neurointerview.git
   cd neurointerview
   ```
 
@@ -82,7 +82,7 @@ When developing features, particularly those related to accommodations for neuro
 
 1. **Update your fork** with the latest changes from the main repository
    ```bash
-   git remote add upstream https://github.com/originalowner/neurointerview.git
+   git remote add upstream https://github.com/samsterpiece/neurointerview.git
    git fetch upstream
    git merge upstream/main
    ```
