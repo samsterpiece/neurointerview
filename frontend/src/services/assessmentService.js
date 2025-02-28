@@ -82,6 +82,16 @@ export const assessmentService = {
   // Run code against test cases (without submitting)
   async runCode(data) {
     try {
+      // Supported programming languages
+      const supportedLanguages = [
+        'javascript', 'python', 'java', 'cpp', 'csharp', 'rust', 'go'
+      ];
+
+      // Validate language
+      if (!supportedLanguages.includes(data.language)) {
+        throw new Error(`Unsupported programming language: ${data.language}`);
+      }
+
       const response = await api.post('/api/submissions/run/', data);
       return response.data;
     } catch (error) {
@@ -93,6 +103,16 @@ export const assessmentService = {
   // Submit a solution for a problem
   async submitSolution(data) {
     try {
+      // Supported programming languages
+      const supportedLanguages = [
+        'javascript', 'python', 'java', 'cpp', 'csharp', 'rust', 'go'
+      ];
+
+      // Validate language
+      if (!supportedLanguages.includes(data.language)) {
+        throw new Error(`Unsupported programming language: ${data.language}`);
+      }
+
       const response = await api.post('/api/submissions/', data);
       return response.data;
     } catch (error) {
