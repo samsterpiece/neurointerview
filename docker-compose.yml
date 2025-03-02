@@ -42,16 +42,17 @@ services:
   backend:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: backend/Dockerfile
     container_name: neurointerview-backend
     restart: always
     volumes:
-      - ./backend:/app
-      - backend-static:/app/staticfiles
-      - backend-media:/app/media
+      - ./backend:/backend
+      - backend-static:/backend/staticfiles
+      - backend-media:/backend/media
     ports:
       - "8000:8000"
     environment:
+      - PYTHONPATH=/backend
       - DEBUG=True
       - SECRET_KEY=development-secret-key-change-in-production
       - MONGO_HOST=mongo
@@ -72,7 +73,7 @@ services:
              watchmedo auto-restart \
                --recursive \
                --pattern='*.py' \
-               --directory='/app' \
+               --directory='/backend' \
                --ignore-patterns='*/.*' \
                python manage.py runserver 0.0.0.0:8000"
     networks:
@@ -103,14 +104,15 @@ services:
   pycharm-test:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: backend/Dockerfile
     container_name: eurointerview-pycharm-test
     restart: "no"
     volumes:
-      - ./backend:/app
-      - backend-test-static:/app/staticfiles
-      - backend-test-media:/app/media
+      - ./backend:/backend
+      - backend-test-static:/backend/staticfiles
+      - backend-test-media:/backend/media
     environment:
+      - PYTHONPATH=/backend
       - DEBUG=True
       - SECRET_KEY=test-secret-key
       - MONGO_HOST=mongo-test
@@ -159,12 +161,13 @@ services:
   seed-data:
     build:
       context: ./backend
-      dockerfile: Dockerfile
+      dockerfile: backend/Dockerfile
     container_name: neurointerview-seed
     restart: "no"
     volumes:
-      - ./backend:/app
+      - ./backend:/backend
     environment:
+      - PYTHONPATH=/backend
       - MONGO_HOST=mongo
       - MONGO_PORT=27017
       - MONGO_USER=root

@@ -4,9 +4,10 @@ FROM python:3.9-slim-buster
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
+ENV PYTHONPATH=/backend
 
 # Set work directory
-WORKDIR /app
+WORKDIR /backend
 
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
@@ -22,7 +23,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN pip install watchdog
 
 # Copy the current directory contents into the container
-COPY . .
+COPY ../backend .
 
 # Expose the port the app runs on
 EXPOSE 8000
