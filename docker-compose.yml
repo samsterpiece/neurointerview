@@ -61,12 +61,20 @@ services:
       - MONGO_DB=neurointerview
       - ALLOWED_HOSTS=localhost,127.0.0.1,backend
       - CORS_ALLOWED_ORIGINS=http://localhost:3000,http://frontend:3000
+      - PYTHONUNBUFFERED=1
     depends_on:
       - mongo
     command: >
-      sh -c "python manage.py collectstatic --noinput &&
+      sh -c "echo 'Waiting for MongoDB to be ready...' &&
+             python manage.py collectstatic --noinput &&
              python manage.py migrate &&
-             python manage.py runserver 0.0.0.0:8000"
+             echo 'Detecting changes, reloading environment...' &&
+             watchmedo auto-restart \
+               --recursive \
+               --pattern='*.py' \
+               --directory='/app' \
+               --ignore-patterns='*/.*' \
+               python manage.py runserver 0.0.0.0:8000"
     networks:
       - neurointerview-network
     healthcheck:
@@ -75,6 +83,49 @@ services:
       timeout: 10s
       retries: 3
       start_period: 40s
+
+  # MongoDB Test service
+  mongo-test:
+    image: mongo:5.0
+    container_name: neurointerview-mongo-test
+    restart: "no"
+    ports:
+      - "27018:27017"
+    volumes:
+      - mongo-test-data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=rootpassword
+    networks:
+      - neurointerview-network
+
+  # Backend Test Service
+  pycharm-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: eurointerview-pycharm-test
+    restart: "no"
+    volumes:
+      - ./backend:/app
+      - backend-test-static:/app/staticfiles
+      - backend-test-media:/app/media
+    environment:
+      - DEBUG=True
+      - SECRET_KEY=test-secret-key
+      - MONGO_HOST=mongo-test
+      - MONGO_PORT=27017
+      - MONGO_USER=root
+      - MONGO_PASSWORD=rootpassword
+      - MONGO_DB=neurointerview_test
+      - ALLOWED_HOSTS=localhost,127.0.0.1,pycharm-test
+      - DJANGO_SETTINGS_MODULE=neurointerview.settings.test
+    depends_on:
+      - mongo-test
+    command: >
+      sh -c "python manage.py test"
+    networks:
+      - neurointerview-network
 
   # React frontend service
   frontend:
@@ -134,7 +185,13 @@ networks:
 volumes:
   mongo-data:
     driver: local
+  mongo-test-data:
+    driver: local
   backend-static:
     driver: local
+  backend-test-static:
+    driver: local
   backend-media:
+    driver: local
+  backend-test-media:
     driver: local
