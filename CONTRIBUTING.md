@@ -123,6 +123,37 @@ When developing features, particularly those related to accommodations for neuro
 - Comment complex logic, but let code be self-documenting when possible
 - Follow language-specific best practices
 
+### Code Quality Enforcement
+
+We use pre-commit hooks to automatically enforce coding standards. After setting up your development environment:
+
+```bash
+# Install pre-commit
+pip install pre-commit
+
+# Set up the git hooks
+pre-commit install
+```
+
+These hooks will run automatically before each commit, checking for issues and fixing some of them automatically. You can also run the checks manually:
+
+```bash
+# Run on all files
+pre-commit run --all-files
+
+# Run on staged files only
+pre-commit run
+```
+
+If a pre-commit hook fails, fix the issues and try committing again. The hooks enforce:
+
+- Black formatting for Python code
+- isort for organizing imports
+- Flake8 for Python linting
+- Prettier for JavaScript/React formatting
+- ESLint for JavaScript/React linting
+- General checks like trailing whitespace and file endings
+
 ### Python (Backend)
 
 - Follow [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide

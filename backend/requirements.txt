@@ -1,8 +1,16 @@
+# Development tools
+pre-commit==3.3.2
+
+# Django and REST framework
 Django==4.2.8
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.0
 django-cors-headers==4.3.0
+
+# Database
 djongo==1.3.6
 pymongo==3.12.3
+
+# Utilities
 Pillow==10.1.0
 python-dotenv==1.0.0

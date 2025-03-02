@@ -1,0 +1,2 @@
+node_modules/
+node_modules/@testing-library/jest-dom  # Skip linting this dependency

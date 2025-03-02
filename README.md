@@ -6,7 +6,7 @@
   <p>
     <strong>Technical interviews reimagined for neurodivergent engineers</strong>
   </p>
-  
+
   <p>
     <a href="#features">Features</a> •
     <a href="#getting-started">Getting Started</a> •
@@ -45,8 +45,22 @@ By offering customizable accommodations and focusing on real-world problem-solvi
 
 ### Prerequisites
 
-- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/)
+- [Docker](https://docs.docker.com/get-docker/) and [Docker Compose](https://docs.docker.com/compose/install/) for the backend
+- [Yarn](https://yarnpkg.com/getting-started/install) for the frontend
 - Git
+
+If you're on macOS, you can use Homebrew to install these dependencies:
+
+```bash
+# Install Homebrew if not already installed
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+# Install Docker Desktop (includes Docker Compose)
+brew install --cask docker
+
+# Install Yarn
+brew install yarn
+```
 
 ### Installation
 
@@ -69,25 +83,38 @@ MONGO_DB=neurointerview
 SECRET_KEY=your-secret-key-change-this-in-production
 ```
 
-3. **Start the application using Docker Compose**
+3. **Start the backend services**
+
+We use a Makefile to simplify Docker operations for the backend:
 
 ```bash
-docker-compose up
+# Build the backend Docker images
+make build
+
+# Start the backend services in detached mode
+make up-d
 ```
 
-This will:
-- Start MongoDB database
-- Build and run the Django backend
-- Build and run the React frontend
-- Seed demo data for development
+4. **Install and start the frontend**
 
-4. **Access the application**
+```bash
+# Navigate to the frontend directory
+cd frontend
+
+# Install dependencies
+yarn install
+
+# Start the development server
+yarn start
+```
+
+5. **Access the application**
 
 - Frontend: [http://localhost:3000](http://localhost:3000)
 - Backend API: [http://localhost:8000/api](http://localhost:8000/api)
 - MongoDB Express (database UI): [http://localhost:8081](http://localhost:8081)
 
-5. **Default login credentials**
+6. **Default login credentials**
 
 - Admin: admin@neurointerview.com / adminpassword
 - Company: tech_admin@techinnovate.example.com / password123
@@ -97,53 +124,89 @@ This will:
 
 ### Backend Development
 
-The Django backend code is mounted as a volume in Docker, so changes will be reflected immediately with the auto-reload feature.
+The Django backend runs in Docker and the code is mounted as a volume, so changes will be reflected immediately with the auto-reload feature.
 
 ```bash
-# Run only the backend and database
-docker-compose up backend mongo
-```
+# View backend logs
+make logs
 
-You can run Django management commands through Docker:
-
-```bash
-# Create a superuser
-docker-compose exec backend python manage.py createsuperuser
-
-# Run migrations
-docker-compose exec backend python manage.py migrate
+# Run database migrations
+make migrate
 
 # Seed demo data
-docker-compose exec backend python manage.py seed_demo_data
+make seed
+
+# Access the backend shell
+make shell-backend
+
+# Access the MongoDB shell
+make shell-mongo
+```
+
+You can view all available Makefile commands with:
+
+```bash
+make help
 ```
 
 ### Frontend Development
 
-The React frontend code is also mounted as a volume with hot-reloading enabled.
-
-```bash
-# Run only the frontend
-docker-compose up frontend
-```
-
-For faster development, you can also run the frontend directly on your local machine:
+The React frontend runs directly on your local machine using Yarn for faster development:
 
 ```bash
 cd frontend
-npm install
-npm start
+yarn start
 ```
+
+The frontend development server includes hot-reloading, so changes will be reflected immediately in your browser.
+
+For linting and testing the frontend:
+
+```bash
+# Run linting
+cd frontend
+yarn lint
+
+# Run tests
+cd frontend
+yarn test
+```
+
+### Code Quality Standards
+
+We use pre-commit hooks to ensure consistent code quality across the project. After installing the prerequisites:
+
+```bash
+# Install pre-commit
+pip install pre-commit
+
+# Set up the git hooks
+pre-commit install
+```
+
+Now pre-commit will automatically run checks before each commit, or you can run it manually:
+
+```bash
+# Run on all files
+pre-commit run --all-files
+
+# Run on staged files only
+pre-commit run
+```
+
+These hooks enforce formatting with Black and Prettier, linting with Flake8 and ESLint, and check for other common issues.
 
 ### Database
 
 MongoDB data is persisted in Docker volumes. To reset the database:
 
 ```bash
-# Remove the volumes
-docker-compose down -v
+# Remove all containers and volumes
+make clean
 
-# Start again
-docker-compose up
+# Rebuild and restart
+make build
+make up-d
 ```
 
 ## Project Structure
