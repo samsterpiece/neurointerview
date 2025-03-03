@@ -1,7 +1,9 @@
 # companies/models.py
-from api.models import BaseModel
-from api.users.models import User
+
 from django.db import models
+
+from backend.api.models import BaseModel
+from backend.api.users.models import User
 
 
 class Company(BaseModel):

@@ -1,11 +1,12 @@
 # users/views.py
-from api.users.permissions import IsOwnerOrAdmin
-from api.users.serializers import UserProfileSerializer, UserSerializer
 from django.contrib.auth import get_user_model
 from rest_framework import status, viewsets
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+
+from backend.api.users.permissions import IsOwnerOrAdmin
+from backend.api.users.serializers import UserProfileSerializer, UserSerializer
 
 User = get_user_model()
 

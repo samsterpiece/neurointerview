@@ -1,8 +1,9 @@
 # assessments/serializers.py
-from api.companies.serializers import CompanySerializer, JobPositionSerializer
-from api.users.serializers import UserSerializer
+
 from rest_framework import serializers
 
+from ..companies.serializers import CompanySerializer, JobPositionSerializer
+from ..users.serializers import UserSerializer
 from .models import Assessment, CandidateAssessment, Problem, Submission
 
 

@@ -1,18 +1,19 @@
 # # api/urls.py
-from api.assessments.views import SubmissionViewSet
-from api.views import (
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+from backend.api.assessments.views import SubmissionViewSet
+from backend.api.views import (
     AssessmentViewSet,
     CandidateAssessmentViewSet,
     CompanyViewSet,
     JobPositionViewSet,
     ProblemViewSet,
     UserViewSet,
-)
-from django.urls import include, path
-from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
 )
 
 # Create a router and register viewsets

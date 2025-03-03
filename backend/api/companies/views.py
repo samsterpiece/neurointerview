@@ -1,14 +1,15 @@
 # companies/views.py
-from api.companies.models import Company, CompanyJobPosition
-from api.companies.serializers import (
+from rest_framework import permissions, viewsets
+from rest_framework.decorators import action
+from rest_framework.response import Response
+
+from ..users.permissions import IsCompanyAdmin
+from .models import Company, CompanyJobPosition
+from .serializers import (
     CompanyDetailSerializer,
     CompanySerializer,
     JobPositionSerializer,
 )
-from api.users.permissions import IsCompanyAdmin
-from rest_framework import permissions, viewsets
-from rest_framework.decorators import action
-from rest_framework.response import Response
 
 
 class CompanyViewSet(viewsets.ModelViewSet):

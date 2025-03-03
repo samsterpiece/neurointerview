@@ -1,7 +1,8 @@
 # companies/serializers.py
-from api.users.serializers import UserSerializer
+
 from rest_framework import serializers
 
+from ..users.serializers import UserSerializer
 from .models import Company, CompanyJobPosition
 
 

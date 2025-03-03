@@ -1,7 +1,9 @@
 # assessments/models.py
-from api.models import BaseModel
+
 from django.apps import apps
 from django.db import models
+
+from backend.api.models import BaseModel
 
 
 class Problem(BaseModel):

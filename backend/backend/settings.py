@@ -38,7 +38,10 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     # Local apps
-    "api",  # Changed to this
+    "api",
+    "api.companies",
+    "api.assessments",
+    "api.users",
 ]
 
 MIDDLEWARE = [
