@@ -47,7 +47,7 @@ def check_settings(**kwargs: Any) -> list[CheckMessage]:
         )
 
     if (
-        not isinstance(conf.CORS_PREFLIGHT_MAX_AGE, int)  # type: ignore [redundant-expr]
+        not isinstance(conf.CORS_PREFLIGHT_MAX_AGE, int)
         or conf.CORS_PREFLIGHT_MAX_AGE < 0
     ):
         errors.append(
